@@ -1,0 +1,141 @@
+﻿<Window x:Class="MusicPlayerView.MainWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MusicPlayerView"
+        Title="Music Player" Height="350" MinHeight="240" Width="300" MinWidth="300" MaxWidth="300" Closed="Window_Closed_1" KeyUp="Window_KeyUp">
+
+    <Window.Resources>
+        <local:TimeConverter x:Key="TimeConverter" />
+    </Window.Resources>
+
+    <Window.Background>
+        <ImageBrush ImageSource="/MusicPlayerView;component/background.jpg" Stretch="UniformToFill"/>
+    </Window.Background>
+
+
+    <DockPanel >
+
+
+
+        <Menu DockPanel.Dock="Top" Foreground="Black">
+            <Menu.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="#FF646464" Offset="1"/>
+                </LinearGradientBrush>
+            </Menu.Background>
+            <MenuItem Header="Playlist">
+                <MenuItem.Background>
+                    <ImageBrush/>
+                </MenuItem.Background>
+
+                <MenuItem Header="New Playlist..." HorizontalAlignment="Left" 
+                          x:Name="NewPlaylist" Click="NewPlaylist_Click"/>
+                <MenuItem Header="Load Playlist..." HorizontalAlignment="Left" 
+                          x:Name="LoadPlaylist" Click="LoadPlaylist_Click"/>
+                <MenuItem Header="Save Playlist..." HorizontalAlignment="Left" 
+                          x:Name="SavePlaylist" Click="SavePlaylist_Click"/>
+            </MenuItem>
+            <MenuItem Header="Library"  Click="Library_Click">
+                <MenuItem.Background>
+                    <ImageBrush/>
+                </MenuItem.Background>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.Background>
+                <ImageBrush/>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+            <WrapPanel HorizontalAlignment="Center" Margin="0,5,0,0"  VerticalAlignment="Center" Grid.Row="0">
+                <WrapPanel.Background>
+                    <ImageBrush/>
+                </WrapPanel.Background>
+                <Label Name="LabelAlbumName" Content="AlbumName" FontSize="12" Foreground="White" FontFamily="Rockwell" Background="#FF404040" Opacity="0.95"/>
+                <Label Name="LabelAlbumYear" Content="AlbumYear" FontSize="12" Foreground="White" FontFamily="Rockwell" Background="#FF404040" Opacity="0.95"/>
+            </WrapPanel>
+
+
+            <WrapPanel HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Row="1">
+                <WrapPanel.Background>
+                    <ImageBrush/>
+                </WrapPanel.Background>
+                <Label Name="LabelArtistName" Content="Artistname" FontSize="16" Foreground="White" FontFamily="Rockwell" Background="#FF404040" Opacity="0.95"/>
+
+            </WrapPanel>
+
+
+            <WrapPanel HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Row="2">
+                <WrapPanel.Background>
+                    <ImageBrush/>
+                </WrapPanel.Background>
+                <Label Name="LabelSongName" Content="SongName" FontSize="16" FontWeight="Bold" Foreground="White" FontFamily="Rockwell" Background="#FF404040" Opacity="0.95"/>
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3">
+                <WrapPanel.Background>
+                    <ImageBrush/>
+                </WrapPanel.Background>
+                <Label Name="LabelPosition" Content="0:12" FontSize="12" Foreground="White" FontWeight="Bold" Background="#FF404040" Opacity="0.8"/>
+                <ProgressBar Name="ProgressBarPosition" Width="200px" Height="8px"  Value="50" Foreground="Black">
+                    <ProgressBar.Background>
+                        <ImageBrush/>
+                    </ProgressBar.Background>
+                </ProgressBar>
+                <Label Name="LabelDuration" Content="3:32" FontSize="12" Foreground="White" FontWeight="Bold" Opacity="0.8" Background="#FF404040"/>
+            </WrapPanel>
+
+            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4">
+                <WrapPanel.Background>
+                    <ImageBrush/>
+                </WrapPanel.Background>
+                <Button Name="ButtonPrevious" Width="32px" Height="32px" Content="Prev" Margin="0,0,10,0" Foreground="White" FontFamily="Rockwell" FontStyle="Italic" Background="#FF404040" Click="ButtonPrevious_Click"/>
+                <Button Name="ButtonPlay" Width="32px" Height="32px" Content="Play" Foreground="White" FontFamily="Rockwell" FontStyle="Italic" Background="#FF404040" Click="ButtonPlay_Click"/>
+                <Button Name="ButtonStop" Width="32px" Height="32px" Content="Stop" Margin="5,0,5,0" Foreground="White" FontFamily="Rockwell" FontStyle="Italic" Background="#FF404040" Click="ButtonStop_Click"/>
+                <ToggleButton Name="ToggleButtonRandom" Width="32" Height="32" Content="Random" Foreground="White" FontFamily="Rockwell" FontStyle="Italic" Background="#FF404040" Click="ToggleButtonRandom_Click" />
+                <Button Name="ButtonNext" Width="32px" Height="32px" Content="Next" Margin="10,0,0,0" Foreground="White" FontFamily="Rockwell" FontStyle="Italic" Background="#FF404040" Click="ButtonNext_Click"/>
+            </WrapPanel>
+
+            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5">
+                <WrapPanel.Background>
+                    <ImageBrush/>
+                </WrapPanel.Background>
+                <Label Content="Volume" Foreground="White" Background="#FF404040" Opacity="0.8" Margin="0,5,5,0"/>
+                <Slider Name="SliderVolume" Width="100px" ValueChanged="SliderVolume_ValueChanged" SmallChange="1" Maximum="100" Margin="0,5,0,0" Opacity="0.9"/>
+            </WrapPanel>
+
+            <ScrollViewer Name="scroll"  Grid.Row="6" Margin="5" Opacity="0.8">
+                <ListBox Name="ListBoxSongs" Width="400"   Foreground="White"
+                     ItemsSource="{Binding}" Background="#FF404040" MouseDoubleClick="ListBoxSongs_MouseDoubleClick"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Delete From Playlist" Click="MenuItem_Click" />
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <TextBlock Text="{Binding Path=SongName}" Width="225px"/>
+                                <TextBlock Name="TextBlockDuration" Text="{Binding Path=Duration, Converter={StaticResource TimeConverter} }" HorizontalAlignment="Right"/>
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </Grid>
+    </DockPanel>
+
+
+</Window>
+
